@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+		PUBLIC "-//org.mybatis/DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="my.remind.board3.mapper.ContentMapper">
+	<!-- Getters -->
+	<!-- TODO: getContents(int start, int count) : return ArrayList<ContentVO> -->
+	<select id="getContents" parameterType="hashmap" resultType="my.remind.board3.vo.ContentVO">
+		SELECT *
+		FROM board
+		WHERE boardAvailable = 1
+		ORDER BY boardNo DESC
+		LIMIT #{start}, #{count}
+	</select>
+	
+	<!-- TODO: getContent(int contentId) : return ContentVO -->
+	<select id="getContent" parameterType="java.lang.Integer" resultType="my.remind.board3.vo.ContentVO">
+		SELECT *
+		FROM board
+		WHERE boardNo = #{contentId}
+	</select>
+	
+	<!-- TODO: getNextContents(int lastContentId) : return int -->
+	<select id="getNextContents" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM board
+		WHERE boardAvailable = 1
+		AND boardNo <![CDATA[ < ]]> #{ lastContentId }
+	</select>
+
+	<!-- TODO: getPrevContents(int firstContentId) : return int -->
+	<select id="getPrevContents" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM board
+		WHERE boardAvailable = 1
+		AND boardNo <![CDATA[ > ]]> #{ firstContentId }
+	</select>
+	
+	<!-- TODO: getLastContentId() : return int -->
+	<select id="getLastContentId" resultType="java.lang.Integer">
+		SELECT boardNo
+		FROM board
+		ORDER BY boardNo DESC
+		LIMIT 1
+	</select>
+	
+	<!-- Setters -->
+	<!-- TODO: setContentAvailable(int contentId, int available) : return int -->
+	<update id="setContentAvailable" parameterType="hashmap">
+		UPDATE board
+		SET boardAvailable = #{ boardAvailable }
+		WHERE boardNo = #{ boardNo }
+	</update>
+	
+	<!-- TODO: updateContent(ContentVO content) : return int -->
+	<update id="updateContent" parameterType="my.remind.board3.vo.ContentVO">
+		UPDATE board
+		SET boardTitle = #{boardTitle},
+			boardDate = #{boardDate},
+			boardContent= #{boardContent},
+			boardAvailable = #{boardAvailable}
+		WHERE boardNo = #{boardNo}
+	</update>
+	
+	<!-- TODO: insertContent(ContentVO content) : return int -->
+	<insert id="insertContent" parameterType="my.remind.board3.vo.ContentVO">
+		INSERT INTO board(
+			boardNo,
+			boardTitle,
+			boardWriter,
+			boardDate,
+			boardContent
+		) VALUES (
+			#{boardNo},
+			#{boardTitle},
+			#{boardWriter},
+			#{boardDate},
+			#{boardContent}
+		)
+	</insert>
+	
+	<!-- TODO: deleteContent(int contentId) : return int -->
+	<delete id="deleteContent">
+		DELETE FROM board
+		WHERE boardNo = #{boardNo}
+	</delete>
+</mapper>

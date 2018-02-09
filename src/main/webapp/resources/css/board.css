@@ -1,0 +1,28 @@
+@charset "EUC-KR";
+
+#comment-containner {
+	width: 60%;
+	margin: 0 auto;
+}
+
+.comment-item {
+	border: 1px solid gray;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.comment-item .materialize-textarea {
+	padding: 0;
+	margin: 0;
+}
+
+#comment-write textarea.materialize-textarea,
+#comment-write input {
+	margin: 0;
+	padding: 0;
+}

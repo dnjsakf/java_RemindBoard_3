@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+		PUBLIC "-//org.mybatis/DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="my.remind.board3.mapper.CommentMapper">
+	<!-- Getters -->
+	<!-- TODO: public ArrayList<CommentVO> getComments(int contentId, int page, int count)-->
+	<select id="getComments" parameterType="hashmap" resultType="my.remind.board3.vo.CommentVO">
+		SELECT *
+		FROM board_comment
+		WHERE boardNo = #{contentId}
+		ORDER BY no DESC
+		LIMIT #{start}, #{count}
+	</select>
+	
+	<!-- TODO: public int getNextComments(int contentId, int lastCommentId) -->
+	<select id="getNextComments" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM board_comment
+		WHERE boardNo = #{contentId}
+		AND no <![CDATA[ < ]]> #{lastCommentId}
+	</select>	
+	
+	<!-- TODO: public int getPrevComments(int contentId, int firstCommentId) -->
+	<select id="getPrevComments" parameterType="hashmap" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM board_comment
+		WHERE boardNo = #{contentId}
+		AND no <![CDATA[ > ]]> #{firstCommentId}
+	</select>	
+	
+	<!-- Setters -->
+	<!-- TODO: public int insertComment(CommentVO comment) -->
+	<insert id="insertComment" parameterType="my.remind.board3.vo.CommentVO">
+		INSERT INTO board_comment(
+			writer,
+			date,
+			password,
+			comment,
+			boardNo
+		) VALUES (
+			#{writer},
+			#{date},
+			#{password},
+			#{comment},
+			#{boardNo}
+		)
+	</insert>
+	<!-- TODO: public int updateComment(CommentVO comment) -->
+	<update id="updateComment" parameterType="my.remind.board3.vo.CommentVO">
+		UPDATE board_comment
+		SET date = #{date},
+			comment = #{comment}
+		WHERE no = #{no}
+	</update>
+	
+	<!-- TODO: public int deleteComemnt(int commentId) -->
+	<delete id="deleteComment" parameterType="java.lang.Integer">
+		DELETE FROM board_comment
+		WHERE no = #{no}	
+	</delete>
+</mapper>
